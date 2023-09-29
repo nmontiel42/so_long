@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nmontiel <montielarce9@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 17:16:36 by marvin            #+#    #+#             */
-/*   Updated: 2023/09/21 17:16:36 by marvin           ###   ########.fr       */
+/*   Created: 2023/09/29 16:13:35 by nmontiel          #+#    #+#             */
+/*   Updated: 2023/09/29 16:13:35 by nmontiel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../Include/so_long.h"
 
 int	t_collected(t_game *game)
