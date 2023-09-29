@@ -40,79 +40,42 @@ int	map_min_tiles(char **map)
 	return (TRUE);
 }
 
-int	*initial_pos(char **map)
+int	map_wall_is_closed(char **map)
 {
-	int	x;
-	int	y;
-	int	*pos;
+	size_t	i;
+	size_t	o;
+	size_t	len;
 
-	pos = (int *)ft_calloc(2, sizeof(int));
-	y = 0;
-	while (map[y])
-	{
-		x = 0;
-		while (map[y][x])
-		{
-			if (map[y][x] == 'P')
-			{
-				pos[0] = y;
-				pos[1] = x;
-			}
-			x++;
-		}
-		y++;
-	}
-	return (pos);
-}
-
-void	flood_fill_map(t_game *game, int y, int x)
-{
-	if (!(x < 1 || y < 1 || x >= game->mcolumn || y > game->mline
-			|| game->map2[y][x] == '1' || game->map2[y][x] == 'X'))
-	{
-		game->map2[y][x] = 'X';
-		flood_fill_map(game, y + 1, x);
-		flood_fill_map(game, y - 1, x);
-		flood_fill_map(game, y, x + 1);
-		flood_fill_map(game, y, x - 1);
-	}
-}
-
-int	check_flood_map(char **map)
-{
-	int	i;
-	int	o;
-
+	len = 0;
 	i = 0;
-	while (map[i])
-	{
-		o = 0;
-		while (map[i][o])
-		{
-			if (!(map[i][o] == '1' || map[i][o] == '0'
-				|| map[i][o] == 'X'))
-				return (FALSE);
-			o++;
-		}
+	o = 0;
+	while (map[len])
+		len++;
+	len--;
+	while (i < ft_strlen(map[0]) && map[0][i] == '1' && map[len][i] == '1')
 		i++;
-	}
-	return (TRUE);
+	i--;
+	while (o < len && map[o][0] == '1' && map[o][i] == '1')
+		o++;
+	while (i > 0 && map[len][i] == '1')
+		i--;
+	if (i == 0 && o == len)
+		return (TRUE);
+	return (FALSE);
 }
 
-int	path_is_valid(t_game *game, char *fd)
+int	map_checker(char **map)
 {
-	int	*pos;
-
-	game->map2 = read_map(fd);
-	pos = initial_pos(game->map2);
-	flood_fill_map(game, pos[0], pos[1]);
-	if (check_flood_map(game->map2) == FALSE)
-	{
-		free(pos);
-		freemap(game->map2);
-		return (ft_printf("Error\nThe path is not valid\n"), FALSE);
-	}
-	free(pos);
-	freemap(game->map2);
+	if (map_empty(map) == FALSE)
+		return (ft_printf("Error\nThe map is empty\n"), 1);
+	if (map_rect(map) == FALSE)
+		return (ft_printf("Error\nThe map is not rectangle\n"), 1);
+	if (map_components(map) == FALSE)
+		return (ft_printf("Error\nThe map has the wrong components\n"), 1);
+	if (map_wall_is_closed(map) == FALSE)
+		return (ft_printf("Error\nThe wall is not closed\n"), 1);
+	if (map_min_tiles(map) == FALSE)
+		return (ft_printf("Error\nYou dont have the correct components\n"),
+			1);
 	return (TRUE);
 }

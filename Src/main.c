@@ -33,21 +33,28 @@ int	initialize_game(t_game *game)
 
 int	main(int argc, char **argv)
 {
-	t_game	game;
+	t_game	*game;
 
+	game = ft_calloc(1, sizeof(t_game));
+	if (game == NULL)
+		return (ft_printf("Error\nMemory was not allocated correctly\n"), 1);
 	if (argc != 2)
-		return (ft_printf("Error\nIncorrect number of parameters\n"), FALSE);
+		return (ft_printf("Error\nIncorrect number of parameters\n"), 1);
 	if (check_map_name(argv[1]) == FALSE)
-		return (ft_printf("Error\nInvalid file extension\n"), FALSE);
-	game.map = read_map(argv[1]);
-	if (!game.map)
+		return (ft_printf("Error\nInvalid file extension\n"), 1);
+	game->map = read_map(argv[1]);
+	if (!game->map)
 		return (1);
-	if (map_checker(game.map) == FALSE)
-		return (freemap(game.map), FALSE);
-	map_size(&game, game.map);
-	if (path_is_valid(&game, argv[1]) == FALSE)
-		return (freemap(game.map), 1);
-	if (initialize_game(&game) == FALSE)
+	if (map_checker(game->map) == FALSE)
+		return (freemap(game->map), 1);
+	map_size(game, game->map);
+	if (path_is_valid(game, argv[1]) == FALSE)
+		return (freemap(game->map), 1);
+	if (initialize_game(game) == FALSE)
+	{
+		free(game);
 		return (FALSE);
+	}
+	free(game);
 	return (TRUE);
 }

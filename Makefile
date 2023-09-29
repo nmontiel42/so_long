@@ -10,8 +10,9 @@ LIBS	= ${LIBGL} ${LIBMLX}/libmlx42.a ${LIBFT}/libft.a ${LIBPF}/libftprintf.a ${L
 SRCS	= Src/main.c \
 			Src/check_map.c \
 			Src/check_map2.c \
+			Src/check_map3.c \
 			Src/collectable.c \
-			Src/image.c \
+			Src/visualizer.c \
 			Src/map.c \
 			Src/movements.c
 
@@ -52,5 +53,8 @@ fclean: clean
 	@${MAKE} -C ${LIBGN} fclean
 	
 re: clean all
+
+norma: 
+	norminette ${SRCS}
 
 .PHONY: all, clean, fclean, re, libmlx, libft
